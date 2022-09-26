@@ -7,9 +7,11 @@ import  './RollDice.scss';
 const RollDice = ({ sides }) => {
     const message = document.getElementById("message");
     const adding = document.getElementById("adding");
+    const space = document.getElementById("space");
     const balloon1 = document.querySelector(".balloon1");
     const balloon2 = document.querySelector(".balloon2");
-    
+    const userOneScore = document.getElementById("userOneScore");
+    const userTwoScore = document.getElementById("userTwoScore");
     const [state, setState] = useState({
         die1:'1',
         die2:'1',
@@ -17,9 +19,10 @@ const RollDice = ({ sides }) => {
         totalScore : "",
         totalScore1 : "0",
         totalScore2 : "0",
+        showPlayerName : ' ....... ',
     });
     
-    const {die1, die2, rolling, totalScore, totalScore1, totalScore2} = state;
+    const {die1, die2, rolling, totalScore, totalScore1, totalScore2, showPlayerName} = state;
     const roll = () =>{
         const newDie1 = sides[Math.floor(Math.random() * sides.length)];
         const newDie2 = sides[Math.floor(Math.random() * sides.length)];
@@ -33,6 +36,7 @@ const RollDice = ({ sides }) => {
                 rolling : true,
                 totalScore : score1[0] + score2[0],
                 totalScore1 : score1[0] + score2[0],
+                showPlayerName : ' One ',
             });
             setTimeout(() => {
                 setState((prevState) => ({...prevState, rolling:false}))
@@ -45,25 +49,35 @@ const RollDice = ({ sides }) => {
                 totalScore : score1[0] + score2[0],
                 totalScore1 : totalScore1,
                 totalScore2 : score1[0] + score2[0],
+                showPlayerName : " Two ",
             });
             setTimeout(() => {
                 setState((prevState) => ({...prevState, rolling:false}))
             }, 1000);
+            
         }
     };
-    if(totalScore1 > totalScore2){
-        message.textContent= "Player 1 was Won !";
-        message.classList.add("animate__fadeInTopLeft");
-        adding.style = "visibility: hidden";
-        balloon1.style = "display : block";
-        balloon1.classList.add("animate__backOutUp");
-    }else if(totalScore1 < totalScore2){
-        message.textContent = "Player 2 was Won !";
-        message.classList.add("animate__fadeInTopRight");
-        adding.style = "visibility: hidden";
-        balloon2.style = "display : block";
-        balloon2.classList.add("animate__backOutUp");
-    }
+    setTimeout(() =>{
+        if(totalScore1 > totalScore2){
+            message.textContent= "Player 1 was Won !";
+            message.classList.add("animate__fadeInTopLeft");
+            adding.style = "display: none";
+            space.style = "display:none";
+            balloon1.style = "display : block";
+            balloon1.classList.add("animate__backOutUp");
+            userOneScore.classList.add("animate__bounce");
+            userOneScore.classList.add("animate__infinite");
+        }else if(totalScore1 < totalScore2){
+            message.textContent = "Player 2 was Won !";
+            message.classList.add("animate__fadeInTopRight");
+            adding.style = "display:none";
+            space.style = "display:none";
+            balloon2.style = "display : block";
+            balloon2.classList.add("animate__backOutUp");
+            userTwoScore.classList.add("animate__bounce");
+            userTwoScore.classList.add("animate__infinite");
+        }
+    },2000)
     //restart
     const restart = () =>{
         window.location.reload();
@@ -71,11 +85,11 @@ const RollDice = ({ sides }) => {
     return (
         <>
             <section className='container dice-card rounded-5 shadow'>
-                <h6 className='mt-5 pt-2 text-black-50'>@ createx by <a href="https://github.com/yelynnpaing" className='text-black-50'>yelynnpaing</a> </h6>
+                <h6 className='mt-5 pt-2 text-black-50'>@createx by <a href="https://github.com/yelynnpaing" className='text-black-50'>yelynnpaing</a> </h6>
                 <div className='row justify-content-center align-items-center'>
                     <div className='col-lg-6'>
                         <div className='d-flex flex-column justify-content-center align-items-center'>
-                        <h1 className='text-warning fw-bold animate__animated' id='message'></h1>
+                        <h1 className='text-primary fw-bold animate__animated' id='message'></h1>
                         <div className='mt-2 d-flex'>
                             <Die  face = {String(die1)} rolling = {rolling}/>
                             <Die face = {String(die2)} rolling = {rolling} />
@@ -84,8 +98,12 @@ const RollDice = ({ sides }) => {
                     </div>
                 </div> 
                 <div className="row justify-content-center">
-                    <div className="col-lg-3">
-                        <h5 className='text-center'>Your Scoll is : {totalScore}</h5>
+                    <div className="col-lg-5">
+                        <h5 className='text-center'>
+                            Player 
+                                <span id='ShowPlayerName' className='fw-bold text-primary h2'>{showPlayerName}</span> 
+                                    Scoll is : {totalScore}
+                        </h5>
                     </div>
                 </div>
                 <div className="row pb-5 justify-content-center align-items-center">
@@ -94,9 +112,9 @@ const RollDice = ({ sides }) => {
                            <div className="d-flex flex-column justify-content-center align-items-center">
                                 <h4 className='text-secondary'>
                                     Total Scores : 
-                                    <span className='shadow text-secondary fw-bold' id='userOneScore'>{totalScore1}</span>
+                                    <span className='shadow text-secondary fw-bold animate__animated' id='userOneScore'>{totalScore1}</span>
                                 </h4>
-                                <h2 className='fw-bold text-secondary'>User One</h2>
+                                <h2 className='fw-bold text-secondary'>Player One</h2>
                                 <i className='bi bi-person-circle text-secondary person'></i>
                             </div>
                         </div>
@@ -111,7 +129,7 @@ const RollDice = ({ sides }) => {
                             >
                             {rolling ? "Rolling..." : "Roll Dice"}
                             </button>
-                            <div className='my-4'></div>
+                            <div className='my-4' id='space'></div>
                             <button className='btn btn-warning shadow'
                             onClick={restart}
                             >
@@ -127,9 +145,9 @@ const RollDice = ({ sides }) => {
                             <div className="d-flex flex-column justify-content-center align-items-center">
                                 <h4 className='text-success'>
                                     Total Scores : 
-                                    <span className='bg-light text-success fw-bold shadow' id='userTwoScore'>{totalScore2}</span>
+                                    <span className='bg-light text-success fw-bold shadow animate__animated' id='userTwoScore'>{totalScore2}</span>
                                 </h4>
-                                <h2 className='fw-bold text-success'>User Two</h2>
+                                <h2 className='fw-bold text-success'>Player Two</h2>
                                 <i className='bi bi-person-circle text-success person'></i>
                             </div>
                         </div>
