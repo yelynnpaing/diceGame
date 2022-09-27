@@ -6,7 +6,7 @@ import './Die.scss';
 const Die = ({face, rolling}) =>{
     return(
         <>
-            <i className={`die bi bi-dice-${face} ${rolling && "shaking"}`}></i>
+            <i className={`die bi bi-dice-${face} ${rolling && "animate__animated animate__flip count count"}`}></i>
         </>
     )
 }

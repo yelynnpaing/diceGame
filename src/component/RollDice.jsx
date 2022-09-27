@@ -5,6 +5,7 @@ import Dice from './Die';
 import  './RollDice.scss';
 
 const RollDice = ({ sides }) => {
+    const showDice = document.querySelectorAll(".showDice");
     const message = document.getElementById("message");
     const adding = document.getElementById("adding");
     const space = document.getElementById("space");
@@ -18,7 +19,7 @@ const RollDice = ({ sides }) => {
         rolling : false,
         totalScore : "",
         totalScore1 : "0",
-        totalScore2 : "0",
+        totalScore2 : 0 ,
         showPlayerName : ' ....... ',
     });
     
@@ -59,7 +60,7 @@ const RollDice = ({ sides }) => {
     };
     setTimeout(() =>{
         if(totalScore1 > totalScore2){
-            message.textContent= "Player 1 was Won !";
+            message.textContent= "Winner is Player One!";
             message.classList.add("animate__fadeInTopLeft");
             adding.style = "display: none";
             space.style = "display:none";
@@ -68,7 +69,7 @@ const RollDice = ({ sides }) => {
             userOneScore.classList.add("animate__bounce");
             userOneScore.classList.add("animate__infinite");
         }else if(totalScore1 < totalScore2){
-            message.textContent = "Player 2 was Won !";
+            message.textContent = "Winner is Player Two !";
             message.classList.add("animate__fadeInTopRight");
             adding.style = "display:none";
             space.style = "display:none";
@@ -76,6 +77,9 @@ const RollDice = ({ sides }) => {
             balloon2.classList.add("animate__backOutUp");
             userTwoScore.classList.add("animate__bounce");
             userTwoScore.classList.add("animate__infinite");
+        }else if(totalScore2 === totalScore1){
+            message.textContent = "Roll Again Player Two";
+            message.classList.add("animate__fadeInTopRight");
         }
     },2000)
     //restart
@@ -84,25 +88,25 @@ const RollDice = ({ sides }) => {
     }
     return (
         <>
-            <section className='container dice-card rounded-5 shadow'>
-                <h6 className='mt-5 pt-2 text-black-50'>@createx by <a href="https://github.com/yelynnpaing" className='text-black-50'>yelynnpaing</a> </h6>
+            <section className='container mt-3 dice-card rounded-5 shadow'>
+                <small className='mt-5 mb-3 pt-2 text-black-50 fontSmall'>@createx by <a href="https://github.com/yelynnpaing" className='text-black-50 fw-bold'>yelynnpaing</a> </small>
                 <div className='row justify-content-center align-items-center'>
                     <div className='col-lg-6'>
                         <div className='d-flex flex-column justify-content-center align-items-center'>
                         <h1 className='text-primary fw-bold animate__animated' id='message'></h1>
                         <div className='mt-2 d-flex'>
-                            <Die  face = {String(die1)} rolling = {rolling}/>
+                            <Die  face = {String(die1)} rolling = {rolling} />
                             <Die face = {String(die2)} rolling = {rolling} />
                         </div>
                         </div>
                     </div>
                 </div> 
                 <div className="row justify-content-center">
-                    <div className="col-lg-5">
+                    <div className="col-lg-5 mb-3">
                         <h5 className='text-center'>
                             Player 
                                 <span id='ShowPlayerName' className='fw-bold text-primary h2'>{showPlayerName}</span> 
-                                    Scoll is : {totalScore}
+                                    Score is : {totalScore}
                         </h5>
                     </div>
                 </div>
@@ -123,7 +127,7 @@ const RollDice = ({ sides }) => {
                         <i className='bi bi-balloon text-secondary balloon1 animate__animated'></i>
                     </div>
                     <div className="col-lg-2">
-                        <div className="my-sm-3 d-flex flex-column flex-wrap justify-content-center align-content-center">
+                        <div className="my-4 d-flex flex-column align-items-center justify-content-center">
                             <button className='btn btn-primary shadow text-white ' id='adding'
                             onClick={roll} disabled={rolling}
                             >
