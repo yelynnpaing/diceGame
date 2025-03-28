@@ -89,7 +89,7 @@ const RollDice = ({ sides }) => {
     return (
         <>
             <section className='container mt-3 dice-card rounded-5 shadow'>
-                <small className='mt-5 mb-3 pt-2 text-black-50 fontSmall'>@createx by <a href="https://github.com/jaytheo" className='text-black-50 fw-bold'>J Theo</a> </small>
+                <small className='mt-5 mb-3 pt-2 text-black-50 fontSmall'>@createx by <a href="https://github.com/yelynnpaing" className='text-black-50 fw-bold'>YeLynn Paing</a> </small>
                 <div className='row justify-content-center align-items-center'>
                     <div className='col-lg-6'>
                         <div className='d-flex flex-column justify-content-center align-items-center'>
